@@ -2,7 +2,10 @@ services:
   - type: web
     name: veterinary-assistant
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt
+      mkdir -p uploads
+      mkdir -p static/uploads/animals
     startCommand: gunicorn app:app
     envVars:
       - key: PYTHON_VERSION
@@ -14,3 +17,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
     autoDeploy: true
+    disk:
+      name: uploads
+      mountPath: /uploads
+      sizeGB: 1
